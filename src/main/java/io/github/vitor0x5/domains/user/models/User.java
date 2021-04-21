@@ -3,12 +3,19 @@ package io.github.vitor0x5.domains.user.models;
 import io.github.vitor0x5.domains.BaseEntity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
+
+    @NotEmpty(message = "Name can't be empty")
     private String name;
+
+    @NotEmpty(message = "Email can't be empty")
     private String email;
+
+    @NotEmpty(message = "Password can't be empty")
     private String password;
 
     public String getName() {
