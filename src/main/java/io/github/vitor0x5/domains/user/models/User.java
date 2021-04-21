@@ -1,26 +1,38 @@
 package io.github.vitor0x5.domains.user.models;
 
-import io.github.vitor0x5.domains.EntityWithUUID;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import io.github.vitor0x5.domains.BaseEntity;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name = "users")
-public class User extends EntityWithUUID {
+public class User extends BaseEntity {
     private String name;
     private String email;
     private String password;
 
-    @CreatedDate
-    @Column(name = "created_at")
-    private Date createdAt;
+    public String getName() {
+        return name;
+    }
 
-    @LastModifiedDate
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
 }
 
