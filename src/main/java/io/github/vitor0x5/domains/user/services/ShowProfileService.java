@@ -1,12 +1,10 @@
 package io.github.vitor0x5.domains.user.services;
 
-import io.github.vitor0x5.domains.user.models.User;
+import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.repositories.UserRepository;
-import io.github.vitor0x5.shared.errors.ApiErrors;
 import io.github.vitor0x5.shared.errors.types.NotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
@@ -18,9 +16,10 @@ public class ShowProfileService {
         this.repository = repository;
     }
 
-    public User execute(UUID id) {
+    @Transactional
+    public AppUser execute(UUID id) {
         return repository
                 .findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found"));
+                .orElseThrow(() -> new NotFoundException(NotFoundException.userNotFound));
     }
 }

@@ -1,4 +1,4 @@
-package io.github.vitor0x5.domains;
+package io.github.vitor0x5.shared;
 
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;

@@ -1,9 +1,10 @@
 package io.github.vitor0x5.domains.user.services;
 
-import io.github.vitor0x5.domains.user.models.User;
+import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.repositories.UserRepository;
 import io.github.vitor0x5.shared.errors.types.BusinessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CreateUserService {
@@ -14,11 +15,16 @@ public class CreateUserService {
         this.repository = repository;
     }
 
-    public User execute(User user) {
-        if(repository.findByEmail(user.getEmail()) != null) {
+    @Transactional
+    public AppUser execute(AppUser appUser) throws BusinessException {
+        if(repository.findByEmail(appUser.getEmail()) != null) {
             throw new BusinessException(
-                    "Email address already used");
+                    BusinessException.emailAlreadyUsed);
         }
-        return repository.save(user);
+        if(appUser.getPassword() == null){
+            throw  new BusinessException(BusinessException.emptyPassword);
+        }
+        appUser.encodePassword(appUser.getPassword());
+        return repository.save(appUser);
     }
 }

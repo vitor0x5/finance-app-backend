@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.UUID;
 
 @Service
@@ -18,6 +19,7 @@ public class DeleteUserService {
         this.repository = repository;
     }
 
+    @Transactional
     public void execute(UUID id) {
         repository
                 .findById(id)
@@ -25,6 +27,6 @@ public class DeleteUserService {
                     repository.delete(user);
                     return user;
                 }).orElseThrow(() ->
-                new NotFoundException("User not found"));
+                new NotFoundException(NotFoundException.userNotFound));
     }
 }

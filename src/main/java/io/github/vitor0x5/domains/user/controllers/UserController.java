@@ -1,18 +1,18 @@
 package io.github.vitor0x5.domains.user.controllers;
 
-import io.github.vitor0x5.domains.user.models.User;
-import io.github.vitor0x5.domains.user.repositories.UserRepository;
+import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.services.CreateUserService;
 import io.github.vitor0x5.domains.user.services.DeleteUserService;
 import io.github.vitor0x5.domains.user.services.ShowProfileService;
+import io.github.vitor0x5.shared.errors.types.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController()
-@RequestMapping("/user")
 public class UserController {
 
     private final ShowProfileService showProfileService;
@@ -26,17 +26,22 @@ public class UserController {
     }
 
     @PostMapping
+    @RequestMapping("/sign/up")
     @ResponseStatus(HttpStatus.CREATED)
-    public User createUser(@RequestBody @Valid User user) {
-        return createUserService.execute(user);
+    public AppUser createUser(@RequestBody @Valid AppUser appUser) {
+        try {
+            return createUserService.execute(appUser);
+        } catch (BusinessException ex) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
+        }
     }
 
-    @GetMapping(value = "/{id}")
-    public User getUser(@PathVariable("id") UUID id) {
+    @GetMapping(value = "/user/{id}")
+    public AppUser getUser(@PathVariable("id") UUID id) {
       return showProfileService.execute(id);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/user/{id}")
     public void deleteUser(@PathVariable("id") UUID id) {
         deleteUserService.execute(id);
     }
