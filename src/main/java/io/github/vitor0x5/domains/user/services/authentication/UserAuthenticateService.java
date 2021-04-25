@@ -3,10 +3,11 @@ package io.github.vitor0x5.domains.user.services.authentication;
 import io.github.vitor0x5.domains.user.dto.CredentialsDTO;
 import io.github.vitor0x5.domains.user.dto.TokenDTO;
 import io.github.vitor0x5.domains.user.entities.AppUser;
-import io.github.vitor0x5.domains.user.repositories.UserRepository;
+import io.github.vitor0x5.domains.user.repositories.UsersRepository;
+import io.github.vitor0x5.domains.user.repositories.implementations.UsersJpaRepository;
 import io.github.vitor0x5.shared.encoder.Encoder;
 import io.github.vitor0x5.shared.errors.types.LoginException;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,17 +15,21 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.Optional;
+
 @Service
 public class UserAuthenticateService implements UserDetailsService {
 
-    private final UserRepository repository;
+    private final UsersRepository usersRepository;
     private final Encoder encoder;
     private final JwtService jwtService;
 
-    public UserAuthenticateService(UserRepository repository, JwtService jwtService) {
-        this.repository = repository;
+    public UserAuthenticateService(UsersJpaRepository repository,
+                                   JwtService jwtService,
+                                   @Qualifier(value = "encoder") Encoder encoder) {
+        this.usersRepository = repository;
         this.jwtService = jwtService;
-        this.encoder = new Encoder();
+        this.encoder = encoder;
     }
 
     public TokenDTO authenticate(@RequestBody CredentialsDTO credentials){
@@ -45,11 +50,13 @@ public class UserAuthenticateService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        AppUser appUser = repository.findByEmail(email);
+        Optional<AppUser> findUser = usersRepository.findByEmail(email);
 
-        if(appUser == null) {
+        if(findUser.isEmpty()) {
             throw new UsernameNotFoundException(LoginException.userNotFound);
         }
+
+        AppUser appUser = findUser.get();
 
         String[] roles = {"USER"};
 

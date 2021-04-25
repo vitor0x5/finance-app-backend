@@ -23,4 +23,8 @@ public class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at")
     private Date updatedAt = new Date();
+
+    public UUID getId() {
+        return id;
+    }
 }

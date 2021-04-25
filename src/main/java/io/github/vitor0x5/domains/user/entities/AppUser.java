@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.vitor0x5.domains.user.utils.passwordValidatorAnnotation.PasswordValidation;
 import io.github.vitor0x5.shared.BaseEntity;
 import io.github.vitor0x5.shared.encoder.Encoder;
+import io.github.vitor0x5.shared.encoder.implementations.BCrypt;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -28,12 +29,6 @@ public class AppUser extends BaseEntity {
     @Column(name="password")
     @JsonIgnore
     private String encryptedPassword;
-
-    public void encodePassword(String password) {
-        Encoder encoder = new Encoder();
-        this.encryptedPassword = encoder.encode(password);
-        this.password = password;
-    }
 
     public String getName() {
         return name;
@@ -61,6 +56,10 @@ public class AppUser extends BaseEntity {
 
     public String getEncryptedPassword() {
         return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
     }
 }
 

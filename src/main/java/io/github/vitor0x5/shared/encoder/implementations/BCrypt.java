@@ -1,10 +1,11 @@
 package io.github.vitor0x5.shared.encoder.implementations;
 
-import io.github.vitor0x5.shared.encoder.IEncoder;
+import io.github.vitor0x5.shared.encoder.Encoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-public class BCrypt implements IEncoder {
+@Service
+public class BCrypt implements Encoder {
 
     private final BCryptPasswordEncoder encoder;
 
