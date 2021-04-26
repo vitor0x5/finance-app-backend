@@ -1,6 +1,6 @@
 package io.github.vitor0x5.domains.user.services.authentication;
 
-import io.github.vitor0x5.domains.user.dto.CredentialsDTO;
+import io.github.vitor0x5.domains.user.dto.SignInDTO;
 import io.github.vitor0x5.domains.user.dto.TokenDTO;
 import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.repositories.UsersRepository;
@@ -32,7 +32,7 @@ public class UserAuthenticateService implements UserDetailsService {
         this.encoder = encoder;
     }
 
-    public TokenDTO authenticate(@RequestBody CredentialsDTO credentials){
+    public TokenDTO authenticate(@RequestBody SignInDTO credentials){
         UserDetails user;
         try {
             user = loadUserByUsername(credentials.getEmail());
@@ -63,7 +63,7 @@ public class UserAuthenticateService implements UserDetailsService {
         return User
                 .builder()
                 .username(appUser.getEmail())
-                .password(appUser.getEncryptedPassword())
+                .password(appUser.getPassword())
                 .roles(roles)
                 .build();
     }

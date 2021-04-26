@@ -2,10 +2,7 @@ package io.github.vitor0x5.domains.user.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.github.vitor0x5.domains.user.utils.passwordValidatorAnnotation.PasswordValidation;
 import io.github.vitor0x5.shared.BaseEntity;
-import io.github.vitor0x5.shared.encoder.Encoder;
-import io.github.vitor0x5.shared.encoder.implementations.BCrypt;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -14,21 +11,11 @@ import javax.validation.constraints.NotEmpty;
 @Entity
 @Table(name = "users")
 public class AppUser extends BaseEntity {
-
-    @NotEmpty(message = "Name can't be empty")
     private String name;
-
-    @NotEmpty(message = "Email can't be empty")
-    @Email
     private String email;
 
-    @Transient
-    @PasswordValidation
-    private String password;
-
-    @Column(name="password")
     @JsonIgnore
-    private String encryptedPassword;
+    private String password;
 
     public String getName() {
         return name;
@@ -52,14 +39,6 @@ public class AppUser extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
     }
 }
 

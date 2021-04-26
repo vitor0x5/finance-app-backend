@@ -1,6 +1,7 @@
 package io.github.vitor0x5.domains.user.controllers;
 
-import io.github.vitor0x5.domains.user.entities.AppUser;
+import io.github.vitor0x5.domains.user.dto.SignUpDTO;
+import io.github.vitor0x5.domains.user.dto.UserDataDTO;
 import io.github.vitor0x5.domains.user.services.CreateUserService;
 import io.github.vitor0x5.domains.user.services.DeleteUserService;
 import io.github.vitor0x5.domains.user.services.ShowProfileService;
@@ -28,16 +29,16 @@ public class UserController {
     @PostMapping
     @RequestMapping("/sign/up")
     @ResponseStatus(HttpStatus.CREATED)
-    public AppUser createUser(@RequestBody @Valid AppUser appUser) {
+    public UserDataDTO createUser(@RequestBody @Valid SignUpDTO user) {
         try {
-            return createUserService.execute(appUser);
+            return createUserService.execute(user);
         } catch (BusinessException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }
 
     @GetMapping(value = "/user/{id}")
-    public AppUser getUser(@PathVariable("id") UUID id) {
+    public UserDataDTO getUser(@PathVariable("id") UUID id) {
       return showProfileService.execute(id);
     }
 

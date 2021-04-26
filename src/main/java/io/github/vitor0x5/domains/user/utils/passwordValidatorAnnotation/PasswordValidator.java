@@ -9,9 +9,6 @@ public class PasswordValidator implements ConstraintValidator<PasswordValidation
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if(s==null){
-            return true;
-        }
         if(s.length()>=8){
             Pattern letter = Pattern.compile("[a-zA-z]");
             Pattern digit = Pattern.compile("[0-9]");

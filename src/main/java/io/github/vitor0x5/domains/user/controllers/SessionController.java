@@ -1,8 +1,7 @@
 package io.github.vitor0x5.domains.user.controllers;
 
-import io.github.vitor0x5.domains.user.dto.CredentialsDTO;
+import io.github.vitor0x5.domains.user.dto.SignInDTO;
 import io.github.vitor0x5.domains.user.dto.TokenDTO;
-import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.services.authentication.UserAuthenticateService;
 import io.github.vitor0x5.shared.errors.types.LoginException;
 import org.springframework.http.HttpStatus;
@@ -24,7 +23,7 @@ public class SessionController {
     @PostMapping
     @RequestMapping("sign/in")
     @ResponseStatus(HttpStatus.OK)
-    public TokenDTO authenticate(@RequestBody @Valid CredentialsDTO credentials) {
+    public TokenDTO authenticate(@RequestBody @Valid SignInDTO credentials) {
         try{
             return userAuthenticateService.authenticate(credentials);
         } catch (LoginException ex) {
