@@ -41,7 +41,6 @@ public class UserAuthenticateService implements UserDetailsService {
         }
 
         if(encoder.matches(credentials.getPassword(), user.getPassword())) {
-
             return jwtService.generateToken(user.getUsername());
         } else {
             throw new LoginException(LoginException.userNotFound);

@@ -30,14 +30,6 @@ class CreateUserServiceTest {
         repository.save(SignUpDTO.toAppUser(user1));
     }
 
-    private SignUpDTO createUser(String email, String password, String name) {
-        SignUpDTO user = new SignUpDTO();
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setName(name);
-        return user;
-    }
-
     @Test
     void testCreateUserWithValidEmailAndPasword() {
         SignUpDTO newUser = createUser("user2@email.com", "abcd@1234", "User Two");
@@ -74,6 +66,14 @@ class CreateUserServiceTest {
         } catch (RuntimeException ex) {
             assertThat(ex).isInstanceOf(BusinessException.class);
         }
+    }
+
+    private SignUpDTO createUser(String email, String password, String name) {
+        SignUpDTO user = new SignUpDTO();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setName(name);
+        return user;
     }
 
     private void assertThatUsersAreEqual(UserDataDTO user1, UserDataDTO user2) {
