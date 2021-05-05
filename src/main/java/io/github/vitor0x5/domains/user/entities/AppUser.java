@@ -2,11 +2,12 @@ package io.github.vitor0x5.domains.user.entities;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.vitor0x5.domains.income.entities.Income;
 import io.github.vitor0x5.shared.BaseEntity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -16,6 +17,9 @@ public class AppUser extends BaseEntity {
 
     @JsonIgnore
     private String password;
+
+    @OneToMany(targetEntity = Income.class, mappedBy = "user")
+    private List<Income> incomes = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -39,6 +43,14 @@ public class AppUser extends BaseEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Income> getIncomes() {
+        return incomes;
+    }
+
+    public void setIncomes(List<Income> incomes) {
+        this.incomes = incomes;
     }
 }
 
