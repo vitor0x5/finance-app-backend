@@ -16,6 +16,7 @@ public class Income extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private AppUser user;
 
+    private String place;
     private String description;
     private String value;
 
@@ -28,6 +29,14 @@ public class Income extends BaseEntity {
 
     public void setUser(AppUser user) {
         this.user = user;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
     }
 
     public String getDescription() {
@@ -53,4 +62,5 @@ public class Income extends BaseEntity {
     public void setIncomeDate(Date incomeDate) {
         this.incomeDate = incomeDate;
     }
+
 }

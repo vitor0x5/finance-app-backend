@@ -3,9 +3,8 @@ package io.github.vitor0x5.domains.user.services;
 import io.github.vitor0x5.domains.user.dto.SignUpDTO;
 import io.github.vitor0x5.domains.user.dto.UserDataDTO;
 import io.github.vitor0x5.domains.user.repositories.fakes.FakeUsersRepository;
+import io.github.vitor0x5.domains.user.utils.mocks.UserMocksFactory;
 import io.github.vitor0x5.shared.encoder.fakes.FakeEncoder;
-import io.github.vitor0x5.shared.errors.ApiErrors;
-import io.github.vitor0x5.shared.errors.types.BusinessException;
 import io.github.vitor0x5.shared.errors.types.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,15 +25,15 @@ class ShowProfileServiceTest {
         FakeEncoder encoder = new FakeEncoder();
         showProfileService = new ShowProfileService(repository);
 
-        user1 = createUser("user1@email.com", "1234@bcd", "User One");
+        user1 = UserMocksFactory.mockUser1SignUpDTO();
         repository.save(SignUpDTO.toAppUser(user1));
     }
 
     @Test
     void testShowProfileWithValidEmail() {
-        UserDataDTO createdUserData = showProfileService.execute(user1.getEmail());
-        UserDataDTO newUserData = new UserDataDTO(user1.getName(), user1.getEmail());
-        assertThatUsersAreEqual(newUserData, createdUserData);
+        UserDataDTO profileData = showProfileService.execute(user1.getEmail());
+        UserDataDTO expectedProfileData = new UserDataDTO(user1.getName(), user1.getEmail());
+        assertThatUsersAreEqual(expectedProfileData, profileData);
     }
 
     @Test
@@ -46,14 +45,6 @@ class ShowProfileServiceTest {
         }
 
 
-    }
-
-    private SignUpDTO createUser(String email, String password, String name) {
-        SignUpDTO user = new SignUpDTO();
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setName(name);
-        return user;
     }
 
     private void assertThatUsersAreEqual(UserDataDTO user1, UserDataDTO user2) {
