@@ -30,16 +30,12 @@ public class UserController {
     @RequestMapping("/sign/up")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDataDTO createUser(@RequestBody @Valid SignUpDTO user) {
-        try {
-            return createUserService.execute(user);
-        } catch (BusinessException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-        }
+        return createUserService.execute(user);
     }
 
-    @GetMapping(value = "/user/{id}")
-    public UserDataDTO getUser(@PathVariable("id") UUID id) {
-      return showProfileService.execute(id);
+    @GetMapping(value = "/me/profile")
+    public UserDataDTO getUser(@RequestAttribute("userEmail") String userEmail) {
+      return showProfileService.execute(userEmail);
     }
 
     @DeleteMapping(value = "/user/{id}")

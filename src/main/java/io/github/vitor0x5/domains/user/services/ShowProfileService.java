@@ -20,8 +20,8 @@ public class ShowProfileService {
     }
 
     @Transactional
-    public UserDataDTO execute(UUID id) {
-        Optional<AppUser> user = usersRepository.findById(id);
+    public UserDataDTO execute(String userEmail) {
+        Optional<AppUser> user = usersRepository.findByEmail(userEmail);
         if(user.isPresent()){
             return new UserDataDTO(user.get().getName(), user.get().getEmail());
         }
