@@ -8,6 +8,7 @@ import io.github.vitor0x5.domains.user.repositories.implementations.UsersJpaRepo
 import io.github.vitor0x5.shared.encoder.Encoder;
 import io.github.vitor0x5.shared.errors.types.LoginException;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,10 +16,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.http.Cookie;
 import java.util.Optional;
 
 @Service
 public class UserAuthenticateService implements UserDetailsService {
+
+    @Value("${security.jwt.duration}")
+    private String duration;
 
     private final UsersRepository usersRepository;
     private final Encoder encoder;
@@ -32,7 +37,7 @@ public class UserAuthenticateService implements UserDetailsService {
         this.encoder = encoder;
     }
 
-    public TokenDTO authenticate(@RequestBody SignInDTO credentials){
+    public Cookie authenticate(SignInDTO credentials){
         UserDetails user;
         try {
             user = loadUserByUsername(credentials.getEmail());
@@ -41,7 +46,13 @@ public class UserAuthenticateService implements UserDetailsService {
         }
 
         if(encoder.matches(credentials.getPassword(), user.getPassword())) {
-            return jwtService.generateToken(user.getUsername());
+            TokenDTO token = jwtService.generateToken(user.getUsername());
+
+            Cookie cookie = new Cookie("token", token.getToken());
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
+            cookie.setMaxAge(60 * Integer.parseInt(duration));
+            return cookie;
         } else {
             throw new LoginException(LoginException.userNotFound);
         }

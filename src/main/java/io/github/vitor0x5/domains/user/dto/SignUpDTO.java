@@ -5,15 +5,19 @@ import io.github.vitor0x5.domains.user.utils.passwordValidatorAnnotation.Passwor
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 public class SignUpDTO {
-    @Email
+    @Email(message = "invalid email address")
+    @NotNull(message = "email can't be null")
     private String email;
 
     @PasswordValidation
+    @NotNull(message = "password can't be null")
     private String password;
 
     @NotEmpty(message = "Name can't be empty")
+    @NotNull(message = "name can't be null")
     private String name;
 
     public static AppUser toAppUser(SignUpDTO dto) {
