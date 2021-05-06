@@ -1,5 +1,6 @@
 package io.github.vitor0x5.domains.user.controllers;
 
+import antlr.Token;
 import io.github.vitor0x5.domains.user.dto.SignInDTO;
 import io.github.vitor0x5.domains.user.dto.TokenDTO;
 import io.github.vitor0x5.domains.user.services.authentication.UserAuthenticateService;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController()
@@ -23,12 +26,9 @@ public class SessionController {
     @PostMapping
     @RequestMapping("sign/in")
     @ResponseStatus(HttpStatus.OK)
-    public TokenDTO authenticate(@RequestBody @Valid SignInDTO credentials) {
-        try{
-            return userAuthenticateService.authenticate(credentials);
-        } catch (LoginException ex) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, ex.getMessage());
-        }
+    public void authenticate(@RequestBody @Valid SignInDTO credentials, HttpServletResponse response) {
+        Cookie cookie = userAuthenticateService.authenticate(credentials);
+        response.addCookie(cookie);
     }
 
 }

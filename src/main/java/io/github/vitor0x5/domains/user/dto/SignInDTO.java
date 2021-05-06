@@ -4,13 +4,16 @@ import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.utils.passwordValidatorAnnotation.PasswordValidation;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 
 public class SignInDTO {
 
-    @Email
+    @Email(message = "invalid email address")
+    @NotNull(message = "email can't be null")
     private String email;
 
-    @PasswordValidation
+
+    @NotNull(message = "password can't be null")
     private String password;
 
     public static AppUser toAppUser(SignUpDTO signUpDTO) {
