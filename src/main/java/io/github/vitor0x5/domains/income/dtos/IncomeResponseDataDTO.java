@@ -1,15 +1,20 @@
 package io.github.vitor0x5.domains.income.dtos;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.UUID;
 
 public class IncomeResponseDataDTO {
-    public String place;
+    public UUID id;
+    public String source;
     public String description;
-    public Double value;
-    public Date incomeDate;
+    public BigDecimal value;
+    public LocalDate incomeDate;
 
-    public IncomeResponseDataDTO(String place, String description, Double value, Date incomeDate) {
-        this.place = place;
+    public IncomeResponseDataDTO(UUID id, String source, String description, BigDecimal value, LocalDate incomeDate) {
+        this.id = id;
+        this.source = source;
         this.description = description;
         this.value = value;
         this.incomeDate = incomeDate;

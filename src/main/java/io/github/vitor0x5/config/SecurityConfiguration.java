@@ -37,8 +37,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         String[] nonAuthRoutes = new String[] {
-                "/sign-in",
-                "/sign-up"
+                "/sign-**",
         };
 
         String[] adminRoutes = new String[] {

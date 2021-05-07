@@ -8,4 +8,7 @@ import java.util.UUID;
 public interface IncomesRepository {
     Income save(Income income);
     Optional<Income> findByUserId(UUID userId);
+    Optional<Income> findById(UUID incomeId);
+    void delete(Income income);
+
 }

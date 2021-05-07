@@ -12,6 +12,8 @@ import io.github.vitor0x5.shared.errors.types.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 
 @Service
 public class CreateIncomeService {
@@ -32,14 +34,19 @@ public class CreateIncomeService {
                     throw new NotFoundException(NotFoundException.userNotFound);
                 });
 
-        Income income = IncomeMapper.createIncome(incomeData, user, encoder);
-        incomesRepository.save(income);
+        Income income = IncomeMapper.createIncome(incomeData, user);
+        income = incomesRepository.save(income);
+
+        BigDecimal bigDecimalValue = BigDecimal
+                .valueOf(income.getValue())
+                .movePointLeft(2);
 
         return new IncomeResponseDataDTO(
-                incomeData.place,
-                incomeData.description,
-                incomeData.value,
-                incomeData.incomeDate
+                income.getId(),
+                income.getSource(),
+                income.getDescription(),
+                bigDecimalValue,
+                income.getIncomeDate()
         );
     }
 }

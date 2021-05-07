@@ -22,9 +22,23 @@ public class FakeIncomesRepository implements IncomesRepository {
     @Override
     public Optional<Income> findByUserId(UUID userId) {
         for(Income i: incomes) {
-            if(i.getId().equals(userId))
+            if(i.getUser().getId().equals(userId))
                 return Optional.of(i);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public Optional<Income> findById(UUID incomeId) {
+        for(Income i: incomes) {
+            if(i.getId().equals(incomeId))
+                return Optional.of(i);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public void delete(Income income) {
+        incomes.remove(income);
     }
 }

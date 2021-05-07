@@ -5,6 +5,7 @@ import io.github.vitor0x5.shared.BaseEntity;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.sql.Date;
 
 @Entity
@@ -16,7 +17,7 @@ public class Outcome extends BaseEntity {
     private AppUser user;
 
     private String description;
-    private String value;
+    private Long value;
 
     @Column(name = "outcome_date")
     private Date outcomeDate;
@@ -37,19 +38,11 @@ public class Outcome extends BaseEntity {
         this.description = description;
     }
 
-    public String getValue() {
+    public Long getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(Long value) {
         this.value = value;
-    }
-
-    public Date getOutcomeDate() {
-        return outcomeDate;
-    }
-
-    public void setOutcomeDate(Date outcomeDate) {
-        this.outcomeDate = outcomeDate;
     }
 }

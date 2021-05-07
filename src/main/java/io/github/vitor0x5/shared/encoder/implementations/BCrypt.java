@@ -23,4 +23,6 @@ public class BCrypt implements Encoder {
         return encoder.matches(charSequence, s);
     }
 
+
+
 }

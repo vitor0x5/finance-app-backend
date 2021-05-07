@@ -44,7 +44,8 @@ public class CreateIncomeServiceTest {
         IncomeResponseDataDTO createdIncome = createIncomeService.execute(income, userData.getEmail());
 
         IncomeResponseDataDTO expectedResponse = new IncomeResponseDataDTO(
-                income.place,
+                createdIncome.id,
+                income.source,
                 income.description,
                 income.value,
                 income.incomeDate
@@ -65,7 +66,7 @@ public class CreateIncomeServiceTest {
     }
 
     private void assertThatIncomesAreEquals(IncomeResponseDataDTO i1, IncomeResponseDataDTO i2){
-        assert(i1.place.equals(i2.place));
+        assert(i1.source.equals(i2.source));
         assert(i1.incomeDate.equals(i2.incomeDate));
         assert(i1.description.equals(i2.description));
         assert(i1.value.equals(i2.value));

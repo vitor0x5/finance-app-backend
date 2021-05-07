@@ -26,8 +26,7 @@ public class UserController {
         this.deleteUserService = deleteUserService;
     }
 
-    @PostMapping
-    @RequestMapping("/sign-up")
+    @PostMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDataDTO createUser(@RequestBody @Valid SignUpDTO user) {
         return createUserService.execute(user);

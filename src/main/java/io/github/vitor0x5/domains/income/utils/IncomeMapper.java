@@ -3,16 +3,21 @@ package io.github.vitor0x5.domains.income.utils;
 import io.github.vitor0x5.domains.income.dtos.CreateIncomeDTO;
 import io.github.vitor0x5.domains.income.entities.Income;
 import io.github.vitor0x5.domains.user.entities.AppUser;
-import io.github.vitor0x5.shared.encoder.Encoder;
+
+import java.math.BigDecimal;
+import java.sql.Date;
 
 public class IncomeMapper {
 
-    public static Income createIncome(CreateIncomeDTO dto, AppUser user, Encoder encoder) {
+    public static Income createIncome(CreateIncomeDTO dto, AppUser user) {
         Income income = new Income();
+
+        Long longValue = dto.value.movePointRight(2).longValue();
+
         income.setUser(user);
-        income.setPlace(encoder.encode(dto.place));
-        income.setDescription(encoder.encode(dto.description));
-        income.setValue(encoder.encode(dto.value.toString()));
+        income.setSource(dto.source);
+        income.setDescription(dto.description);
+        income.setValue(longValue);
         income.setIncomeDate(dto.incomeDate);
 
         return income;
