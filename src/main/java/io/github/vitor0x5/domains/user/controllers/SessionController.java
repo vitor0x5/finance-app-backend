@@ -24,7 +24,7 @@ public class SessionController {
     }
 
     @PostMapping
-    @RequestMapping("sign/in")
+    @RequestMapping("sign-in")
     @ResponseStatus(HttpStatus.OK)
     public void authenticate(@RequestBody @Valid SignInDTO credentials, HttpServletResponse response) {
         Cookie cookie = userAuthenticateService.authenticate(credentials);

@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping
-    @RequestMapping("/sign/up")
+    @RequestMapping("/sign-up")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDataDTO createUser(@RequestBody @Valid SignUpDTO user) {
         return createUserService.execute(user);
@@ -38,7 +38,7 @@ public class UserController {
       return showProfileService.execute(userEmail);
     }
 
-    @DeleteMapping(value = "/user/{id}")
+    @DeleteMapping(value = "/users/{id}")
     public void deleteUser(@PathVariable("id") UUID id) {
         deleteUserService.execute(id);
     }

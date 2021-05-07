@@ -21,8 +21,7 @@ public class IncomesController {
     @ResponseStatus(HttpStatus.CREATED)
     public IncomeResponseDataDTO createIncome(
             @RequestAttribute("userEmail") String userEmail,
-            @RequestBody CreateIncomeDTO incomeData,
-            CsrfToken token
+            @RequestBody CreateIncomeDTO incomeData
     ) {
         return createIncomeService.execute(incomeData, userEmail);
     }
