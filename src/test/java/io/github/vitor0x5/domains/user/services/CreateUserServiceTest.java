@@ -4,6 +4,7 @@ import io.github.vitor0x5.domains.user.dto.SignUpDTO;
 import io.github.vitor0x5.domains.user.dto.UserDataDTO;
 import io.github.vitor0x5.domains.user.repositories.fakes.FakeUsersRepository;
 
+import io.github.vitor0x5.domains.user.utils.mocks.UserMocksFactory;
 import io.github.vitor0x5.shared.encoder.fakes.FakeEncoder;
 import io.github.vitor0x5.shared.errors.types.BusinessException;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,13 +27,13 @@ class CreateUserServiceTest {
         FakeEncoder encoder = new FakeEncoder();
         createUserService = new CreateUserService(repository, encoder);
 
-        user1 = createUser("user1@email.com", "1234@bcd", "User One");
+        user1 = UserMocksFactory.mockUser1SignUpDTO();
         repository.save(SignUpDTO.toAppUser(user1));
     }
 
     @Test
     void testCreateUserWithValidEmailAndPasword() {
-        SignUpDTO newUser = createUser("user2@email.com", "abcd@1234", "User Two");
+        SignUpDTO newUser = UserMocksFactory.mockUser2SignUpDTO();
         UserDataDTO createdUserData = createUserService.execute(newUser);
         UserDataDTO newUserData = new UserDataDTO(newUser.getName(), newUser.getEmail());
         assertThatUsersAreEqual(newUserData, createdUserData);
@@ -40,7 +41,8 @@ class CreateUserServiceTest {
 
     @Test
     void testCreateUserWithAlreadyUsedEmail() {
-        SignUpDTO newUser = createUser(user1.getEmail(), "abcd@1234", "User Two");
+        SignUpDTO newUser = UserMocksFactory.mockUser2SignUpDTO();
+        newUser.setEmail(user1.getEmail());
         try{
             createUserService.execute(newUser);
         } catch (RuntimeException ex) {
@@ -50,7 +52,8 @@ class CreateUserServiceTest {
 
     @Test
     void testCreateUserWithInvalidPassword() {
-        SignUpDTO newUser = createUser("user2@email.com", "abc", "User Two");
+        SignUpDTO newUser = UserMocksFactory.mockUser2SignUpDTO();
+        newUser.setPassword("abc");
         try{
             createUserService.execute(newUser);
         } catch (RuntimeException ex) {
@@ -60,20 +63,13 @@ class CreateUserServiceTest {
 
     @Test
     void testCreateUserWithInvalidEmail() {
-        SignUpDTO newUser = createUser("user2email.com", "abcd@1234", "User Two");
+        SignUpDTO newUser = UserMocksFactory.mockUser2SignUpDTO();
+        newUser.setEmail("user2email.com");
         try{
             createUserService.execute(newUser);
         } catch (RuntimeException ex) {
             assertThat(ex).isInstanceOf(BusinessException.class);
         }
-    }
-
-    private SignUpDTO createUser(String email, String password, String name) {
-        SignUpDTO user = new SignUpDTO();
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setName(name);
-        return user;
     }
 
     private void assertThatUsersAreEqual(UserDataDTO user1, UserDataDTO user2) {

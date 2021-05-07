@@ -36,6 +36,7 @@ public class FakeUsersRepository implements UsersRepository {
 
     @Override
     public AppUser save(AppUser user) {
+        user.setId(UUID.randomUUID());
         users.add(user);
         return user;
     }
