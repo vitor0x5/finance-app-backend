@@ -1,7 +1,5 @@
 package io.github.vitor0x5.domains.user.services.authentication;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -34,7 +32,6 @@ public class AuthenticationFilterService extends OncePerRequestFilter {
                                     HttpServletResponse httpServletResponse,
                                     FilterChain filterChain) throws ServletException, IOException {
         Cookie token = WebUtils.getCookie(httpServletRequest, "token");
-
         if(token != null) {
             String jwt = token.getValue();
             if(jwtService.tokenIsValid(jwt)) {

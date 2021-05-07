@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -33,17 +35,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        String[] nonAuthRoutes = new String[] {
+                "/sign/in",
+                "/sign/up"
+        };
+
         http
-            .csrf().disable()
-            .authorizeRequests()
-                .antMatchers("/sign/**")
-                    .permitAll()
-                .anyRequest().authenticated()
+            .csrf()
+                .ignoringAntMatchers(nonAuthRoutes)
+            .and()
+                .authorizeRequests()
+                    .antMatchers(nonAuthRoutes)
+                        .permitAll()
+                    .anyRequest().authenticated()
             .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .addFilterBefore( authenticationFilterService, UsernamePasswordAuthenticationFilter.class);
-        ;
+
     }
 }
