@@ -4,11 +4,13 @@ import io.github.vitor0x5.domains.income.dtos.CreateIncomeDTO;
 import io.github.vitor0x5.domains.income.dtos.IncomeResponseDataDTO;
 import io.github.vitor0x5.domains.income.services.CreateIncomeService;
 import io.github.vitor0x5.domains.income.services.DeleteIncomeService;
+import io.github.vitor0x5.domains.income.services.GetAllIncomesFromAnUserService;
 import io.github.vitor0x5.domains.income.services.UpdateIncomeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -17,11 +19,17 @@ public class IncomesController {
     private final CreateIncomeService createIncomeService;
     private final DeleteIncomeService deleteIncomeService;
     private final UpdateIncomeService updateIncomeService;
+    private final GetAllIncomesFromAnUserService getAllIncomesFromAnUserService;
 
-    public IncomesController(CreateIncomeService createIncomeService, DeleteIncomeService deleteIncomeService, UpdateIncomeService updateIncomeService) {
+    public IncomesController(CreateIncomeService createIncomeService,
+                             DeleteIncomeService deleteIncomeService,
+                             UpdateIncomeService updateIncomeService,
+                             GetAllIncomesFromAnUserService getAllIncomesFromAnUserService
+    ) {
         this.createIncomeService = createIncomeService;
         this.deleteIncomeService = deleteIncomeService;
         this.updateIncomeService = updateIncomeService;
+        this.getAllIncomesFromAnUserService = getAllIncomesFromAnUserService;
     }
 
     @PostMapping("/add")
@@ -48,6 +56,11 @@ public class IncomesController {
             @Valid @RequestBody CreateIncomeDTO incomeData
     ) {
         updateIncomeService.execute(incomeId, incomeData, userEmail);
+    }
+
+    @GetMapping("/all")
+    public List<IncomeResponseDataDTO> getAllIncomesFromAnUser(@RequestAttribute("userEmail") String userEmail) {
+        return getAllIncomesFromAnUserService.execute(userEmail);
     }
 
 }

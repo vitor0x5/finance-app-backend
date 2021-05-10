@@ -22,7 +22,6 @@ import java.sql.Date;
 public class CreateIncomeServiceTest {
     private CreateIncomeService createIncomeService;
     private IncomesRepository incomesRepository;
-    private Encoder encoder;
     private UsersRepository usersRepository;
 
     private SignUpDTO userData;
@@ -30,9 +29,8 @@ public class CreateIncomeServiceTest {
     @BeforeEach
     private void beforeEach() {
         incomesRepository = new FakeIncomesRepository();
-        encoder = new FakeEncoder();
         usersRepository = new FakeUsersRepository();
-        createIncomeService = new CreateIncomeService(incomesRepository, usersRepository, encoder);
+        createIncomeService = new CreateIncomeService(incomesRepository, usersRepository);
 
         userData = UserMocksFactory.mockUser1SignUpDTO();
         usersRepository.save(SignUpDTO.toAppUser(userData));

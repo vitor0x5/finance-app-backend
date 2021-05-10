@@ -19,12 +19,10 @@ import java.math.BigDecimal;
 public class CreateIncomeService {
     private final IncomesRepository incomesRepository;
     private final UsersRepository usersRepository;
-    private final Encoder encoder;
 
-    public CreateIncomeService(IncomesRepository incomesRepository, UsersRepository usersRepository, Encoder encoder) {
+    public CreateIncomeService(IncomesRepository incomesRepository, UsersRepository usersRepository) {
         this.incomesRepository = incomesRepository;
         this.usersRepository = usersRepository;
-        this.encoder = encoder;
     }
 
     @Transactional
