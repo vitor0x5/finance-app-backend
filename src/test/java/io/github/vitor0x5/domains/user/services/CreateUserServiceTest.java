@@ -1,7 +1,7 @@
 package io.github.vitor0x5.domains.user.services;
 
 import io.github.vitor0x5.domains.user.dto.SignUpDTO;
-import io.github.vitor0x5.domains.user.dto.UserDataDTO;
+import io.github.vitor0x5.domains.user.dto.UserResponseDataDTO;
 import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.repositories.fakes.FakeUsersRepository;
 
@@ -38,8 +38,8 @@ class CreateUserServiceTest {
     @Test
     void testCreateUserWithValidEmailAndPasword() {
         SignUpDTO newUser = UserMocksFactory.mockUser2SignUpDTO();
-        UserDataDTO createdUserData = createUserService.execute(newUser);
-        UserDataDTO newUserData = mapper.map(newUser, UserDataDTO.class);
+        UserResponseDataDTO createdUserData = createUserService.execute(newUser);
+        UserResponseDataDTO newUserData = mapper.map(newUser, UserResponseDataDTO.class);
         assertThatUsersAreEqual(newUserData, createdUserData);
     }
 
@@ -76,7 +76,7 @@ class CreateUserServiceTest {
         }
     }
 
-    private void assertThatUsersAreEqual(UserDataDTO user1, UserDataDTO user2) {
+    private void assertThatUsersAreEqual(UserResponseDataDTO user1, UserResponseDataDTO user2) {
         assert(user1.name).equals(user2.name);
         assert(user1.email).equals(user2.email);
     }

@@ -1,7 +1,7 @@
 package io.github.vitor0x5.domains.user.services;
 
 import io.github.vitor0x5.domains.user.dto.SignUpDTO;
-import io.github.vitor0x5.domains.user.dto.UserDataDTO;
+import io.github.vitor0x5.domains.user.dto.UserResponseDataDTO;
 import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.repositories.UsersRepository;
 import io.github.vitor0x5.shared.encoder.Encoder;
@@ -24,7 +24,7 @@ public class CreateUserService {
     }
 
     @Transactional
-    public UserDataDTO execute(SignUpDTO userData) throws BusinessException{
+    public UserResponseDataDTO execute(SignUpDTO userData) throws BusinessException{
         if(usersRepository.findByEmail(userData.email).isPresent()) {
             throw new BusinessException(
                     BusinessException.emailAlreadyUsed);
@@ -34,6 +34,6 @@ public class CreateUserService {
         user.setPassword(encoder.encode(userData.password));
 
         usersRepository.save(user);
-        return mapper.map(user, UserDataDTO.class);
+        return mapper.map(user, UserResponseDataDTO.class);
     }
 }
