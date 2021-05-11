@@ -4,25 +4,28 @@ import io.github.vitor0x5.domains.income.dtos.CreateIncomeDTO;
 import io.github.vitor0x5.domains.income.dtos.IncomeResponseDataDTO;
 import io.github.vitor0x5.domains.income.entities.Income;
 import io.github.vitor0x5.domains.income.repositories.IncomesRepository;
-import io.github.vitor0x5.domains.income.utils.IncomeMapper;
 import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.domains.user.repositories.UsersRepository;
-import io.github.vitor0x5.shared.encoder.Encoder;
 import io.github.vitor0x5.shared.errors.types.NotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.math.BigDecimal;
 
 
 @Service
 public class CreateIncomeService {
     private final IncomesRepository incomesRepository;
     private final UsersRepository usersRepository;
+    private final ModelMapper mapper;
 
-    public CreateIncomeService(IncomesRepository incomesRepository, UsersRepository usersRepository) {
+    public CreateIncomeService(
+            IncomesRepository incomesRepository,
+            UsersRepository usersRepository,
+            ModelMapper mapper
+    ) {
         this.incomesRepository = incomesRepository;
         this.usersRepository = usersRepository;
+        this.mapper = mapper;
     }
 
     @Transactional
@@ -32,19 +35,10 @@ public class CreateIncomeService {
                     throw new NotFoundException(NotFoundException.userNotFound);
                 });
 
-        Income income = IncomeMapper.createIncome(incomeData, user);
-        income = incomesRepository.save(income);
+        Income income = mapper.map(incomeData, Income.class);
+        income.setUser(user);
+        incomesRepository.save(income);
 
-        BigDecimal bigDecimalValue = BigDecimal
-                .valueOf(income.getValue())
-                .movePointLeft(2);
-
-        return new IncomeResponseDataDTO(
-                income.getId(),
-                income.getSource(),
-                income.getDescription(),
-                bigDecimalValue,
-                income.getIncomeDate()
-        );
+        return mapper.map(income, IncomeResponseDataDTO.class);
     }
 }

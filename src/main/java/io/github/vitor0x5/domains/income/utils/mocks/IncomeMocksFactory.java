@@ -1,9 +1,8 @@
-package io.github.vitor0x5.domains.income.utils;
+package io.github.vitor0x5.domains.income.utils.mocks;
 
 import io.github.vitor0x5.domains.income.dtos.CreateIncomeDTO;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class IncomeMocksFactory {

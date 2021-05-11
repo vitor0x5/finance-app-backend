@@ -11,5 +11,4 @@ public interface IncomesRepository {
     List<Income> findByUserId(UUID userId);
     Optional<Income> findById(UUID incomeId);
     void delete(Income income);
-
 }

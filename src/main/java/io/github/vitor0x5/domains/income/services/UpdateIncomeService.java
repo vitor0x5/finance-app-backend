@@ -6,6 +6,7 @@ import io.github.vitor0x5.domains.income.entities.Income;
 import io.github.vitor0x5.domains.income.repositories.IncomesRepository;
 import io.github.vitor0x5.shared.errors.types.BusinessException;
 import io.github.vitor0x5.shared.errors.types.NotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +16,11 @@ import java.util.UUID;
 public class UpdateIncomeService {
 
     private final IncomesRepository incomesRepository;
+    private final ModelMapper mapper;
 
-    public UpdateIncomeService(IncomesRepository incomesRepository) {
+    public UpdateIncomeService(IncomesRepository incomesRepository, ModelMapper mapper) {
         this.incomesRepository = incomesRepository;
+        this.mapper = mapper;
     }
 
     @Transactional
@@ -25,23 +28,17 @@ public class UpdateIncomeService {
         Income income = incomesRepository.findById(incomeId)
                 .orElseThrow(() -> new NotFoundException(NotFoundException.incomeNotFound));
 
-        if (!income.getUser().getEmail().equals(userEmail)){
+        String incomeUserEmail = income.getUser().getEmail();
+
+        if (!incomeUserEmail.equals(userEmail)){
             throw new BusinessException(BusinessException.incorrectUser);
         }
 
-        Long formattedValue = incomeData.value.movePointRight(2).longValue();
+        Income updatedIncome = mapper.map(incomeData, Income.class);
+        updatedIncome.setUser(income.getUser());
+        updatedIncome.setId(income.getId());
 
-        income.setSource(incomeData.source);
-        income.setDescription(incomeData.description);
-        income.setValue(formattedValue);
-        income.setIncomeDate(incomeData.incomeDate);
-
-        incomesRepository.save(income);
-        return new IncomeResponseDataDTO(
-                income.getId(),
-                income.getSource(),
-                income.getDescription(),
-                incomeData.value,
-                income.getIncomeDate());
+        incomesRepository.save(updatedIncome);
+        return mapper.map(updatedIncome, IncomeResponseDataDTO.class);
     }
 }

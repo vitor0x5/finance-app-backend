@@ -1,14 +1,12 @@
 package io.github.vitor0x5.domains.income.entities;
 
+import io.github.vitor0x5.shared.converters.monetary.MonetaryTypeAttributeConverter;
 import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.shared.BaseEntity;
 import org.hibernate.annotations.Type;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity
@@ -21,7 +19,9 @@ public class Income extends BaseEntity {
 
     private String source;
     private String description;
-    private Long value;
+
+    @Convert(converter = MonetaryTypeAttributeConverter.class)
+    private BigDecimal value;
 
     @Column(name = "income_date")
     private LocalDate incomeDate;
@@ -50,11 +50,11 @@ public class Income extends BaseEntity {
         this.description = description;
     }
 
-    public Long getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(Long value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
