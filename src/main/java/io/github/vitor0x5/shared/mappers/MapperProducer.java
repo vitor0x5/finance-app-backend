@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.config.Configuration;
 import org.springframework.context.annotation.Bean;
 
-import javax.annotation.PostConstruct;
 import java.util.function.Supplier;
 
 @org.springframework.context.annotation.Configuration

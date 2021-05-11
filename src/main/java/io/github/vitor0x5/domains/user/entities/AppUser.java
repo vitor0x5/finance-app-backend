@@ -3,6 +3,7 @@ package io.github.vitor0x5.domains.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.github.vitor0x5.domains.income.entities.Income;
+import io.github.vitor0x5.domains.outcome.entities.Outcome;
 import io.github.vitor0x5.shared.BaseEntity;
 
 import javax.persistence.*;
@@ -20,6 +21,9 @@ public class AppUser extends BaseEntity {
 
     @OneToMany(targetEntity = Income.class, mappedBy = "user")
     private List<Income> incomes = new ArrayList<>();
+
+    @OneToMany(targetEntity = Outcome.class, mappedBy = "user")
+    private List<Outcome> outcomes = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -51,6 +55,14 @@ public class AppUser extends BaseEntity {
 
     public void setIncomes(List<Income> incomes) {
         this.incomes = incomes;
+    }
+
+    public List<Outcome> getOutcomes() {
+        return outcomes;
+    }
+
+    public void setOutcomes(List<Outcome> outcomes) {
+        this.outcomes = outcomes;
     }
 }
 
