@@ -37,8 +37,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         String[] nonAuthRoutes = new String[] {
-                "/sign/in",
-                "/sign/up"
+                "/sign-**",
+        };
+
+        String[] adminRoutes = new String[] {
+                "/users/**"
         };
 
         http
@@ -49,7 +52,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                     .antMatchers(nonAuthRoutes)
                         .permitAll()
-                    .anyRequest().authenticated()
+                    .antMatchers(adminRoutes)
+                        .hasRole("ADMIN")
+                .anyRequest().authenticated()
             .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

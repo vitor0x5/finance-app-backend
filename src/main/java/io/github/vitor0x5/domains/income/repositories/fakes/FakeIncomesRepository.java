@@ -3,11 +3,7 @@ package io.github.vitor0x5.domains.income.repositories.fakes;
 import io.github.vitor0x5.domains.income.entities.Income;
 import io.github.vitor0x5.domains.income.repositories.IncomesRepository;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class FakeIncomesRepository implements IncomesRepository {
 
@@ -20,11 +16,26 @@ public class FakeIncomesRepository implements IncomesRepository {
     }
 
     @Override
-    public Optional<Income> findByUserId(UUID userId) {
+    public List<Income> findByUserId(UUID userId) {
+        List<Income> incomesFiltered = new ArrayList<>();
         for(Income i: incomes) {
-            if(i.getId().equals(userId))
+            if(i.getUser().getId().equals(userId))
+                incomesFiltered.add(i);
+        }
+        return incomesFiltered;
+    }
+
+    @Override
+    public Optional<Income> findById(UUID incomeId) {
+        for(Income i: incomes) {
+            if(i.getId().equals(incomeId))
                 return Optional.of(i);
         }
         return Optional.empty();
+    }
+
+    @Override
+    public void delete(Income income) {
+        incomes.remove(income);
     }
 }

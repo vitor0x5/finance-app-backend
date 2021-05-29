@@ -40,12 +40,12 @@ public class UserAuthenticateService implements UserDetailsService {
     public Cookie authenticate(SignInDTO credentials){
         UserDetails user;
         try {
-            user = loadUserByUsername(credentials.getEmail());
+            user = loadUserByUsername(credentials.email);
         } catch (UsernameNotFoundException ex) {
             throw new LoginException(LoginException.userNotFound);
         }
 
-        if(encoder.matches(credentials.getPassword(), user.getPassword())) {
+        if(encoder.matches(credentials.password, user.getPassword())) {
             TokenDTO token = jwtService.generateToken(user.getUsername());
 
             Cookie cookie = new Cookie("token", token.getToken());

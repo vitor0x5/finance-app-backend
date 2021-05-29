@@ -2,10 +2,14 @@ package io.github.vitor0x5.domains.outcome.entities;
 
 import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.shared.BaseEntity;
+import io.github.vitor0x5.shared.converters.monetary.MonetaryTypeAttributeConverter;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "outcomes")
@@ -16,10 +20,13 @@ public class Outcome extends BaseEntity {
     private AppUser user;
 
     private String description;
-    private String value;
+    private String place;
+
+    @Convert(converter = MonetaryTypeAttributeConverter.class)
+    private BigDecimal value;
 
     @Column(name = "outcome_date")
-    private Date outcomeDate;
+    private LocalDate outcomeDate;
 
     public AppUser getUser() {
         return user;
@@ -37,19 +44,27 @@ public class Outcome extends BaseEntity {
         this.description = description;
     }
 
-    public String getValue() {
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public Date getOutcomeDate() {
+    public LocalDate getOutcomeDate() {
         return outcomeDate;
     }
 
-    public void setOutcomeDate(Date outcomeDate) {
+    public void setOutcomeDate(LocalDate outcomeDate) {
         this.outcomeDate = outcomeDate;
     }
 }

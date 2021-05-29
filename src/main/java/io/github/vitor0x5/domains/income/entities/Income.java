@@ -1,12 +1,13 @@
 package io.github.vitor0x5.domains.income.entities;
 
+import io.github.vitor0x5.shared.converters.monetary.MonetaryTypeAttributeConverter;
 import io.github.vitor0x5.domains.user.entities.AppUser;
 import io.github.vitor0x5.shared.BaseEntity;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "incomes")
@@ -16,12 +17,14 @@ public class Income extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private AppUser user;
 
-    private String place;
+    private String source;
     private String description;
-    private String value;
+
+    @Convert(converter = MonetaryTypeAttributeConverter.class)
+    private BigDecimal value;
 
     @Column(name = "income_date")
-    private Date incomeDate;
+    private LocalDate incomeDate;
 
     public AppUser getUser() {
         return user;
@@ -31,12 +34,12 @@ public class Income extends BaseEntity {
         this.user = user;
     }
 
-    public String getPlace() {
-        return place;
+    public String getSource() {
+        return source;
     }
 
-    public void setPlace(String place) {
-        this.place = place;
+    public void setSource(String source) {
+        this.source = source;
     }
 
     public String getDescription() {
@@ -47,19 +50,19 @@ public class Income extends BaseEntity {
         this.description = description;
     }
 
-    public String getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
-    public Date getIncomeDate() {
+    public LocalDate getIncomeDate() {
         return incomeDate;
     }
 
-    public void setIncomeDate(Date incomeDate) {
+    public void setIncomeDate(LocalDate incomeDate) {
         this.incomeDate = incomeDate;
     }
 

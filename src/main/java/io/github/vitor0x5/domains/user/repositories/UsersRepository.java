@@ -2,6 +2,7 @@ package io.github.vitor0x5.domains.user.repositories;
 
 import io.github.vitor0x5.domains.user.entities.AppUser;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
