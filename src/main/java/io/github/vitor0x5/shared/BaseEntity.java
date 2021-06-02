@@ -1,5 +1,6 @@
 package io.github.vitor0x5.shared;
 
+import lombok.Data;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,6 +12,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @MappedSuperclass
+@Data
 public class BaseEntity {
     @Id
     @Type(type = "pg-uuid")
@@ -23,12 +25,4 @@ public class BaseEntity {
     @LastModifiedDate
     @Column(name = "updated_at")
     private Date updatedAt = new Date();
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
 }
